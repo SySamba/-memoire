@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seneweb - Actualités</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        
+        body {
+            font-family: 'Roboto', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f3f4f6;
+            color: #333;
+        }
+
+        a {
+            text-decoration: none;
+            color: #0066ff;
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: #0046cc;
+        }
+
+        
+        header {
+            background: linear-gradient(45deg, #0066ff, #003d99);
+            color: #fff;
+            padding: 5px 5px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            font-size: 2.8rem;
+            margin: 0;
+            animation: fadeInDown 1s ease-in-out;
+        }
+
+        header p {
+            margin-top: 10px;
+            font-size: 1.2rem;
+            animation: fadeInUp 1s ease-in-out;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 15px;
+        }
+
+        
+        .article {
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            overflow: hidden;
+            transform: translateY(30px);
+            animation: slideUp 0.5s ease-in-out forwards;
+        }
+
+        .article:hover {
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            transform: scale(1.02);
+            transition: all 0.3s ease;
+        }
+
+        .article .content {
+            padding: 20px;
+        }
+
+        .article .title {
+            font-size: 1.6rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .article .title a {
+            color: #333;
+            transition: color 0.3s ease;
+        }
+
+        .article .title a:hover {
+            color: #0066ff;
+        }
+
+        .article .category {
+            font-size: 0.9rem;
+            color: #555;
+            font-style: italic;
+            margin-bottom: 10px;
+        }
+
+        .article .meta {
+            font-size: 0.8rem;
+            color: #888;
+            margin-bottom: 15px;
+        }
+
+        .article .verdict {
+            font-size: 1rem;
+            font-weight: bold;
+            color: #dc3545;
+        }
+
+        .article .verdict.success {
+            color: #28a745;
+        }
+
+        
+        footer {
+            background: #333;
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+            margin-top: 50px;
+        }
+
+        footer p {
+            margin: 0;
+            font-size: 1.3rem;
+        }
+
+        footer a {
+            color: #0066ff;
+        }
+
+        footer a:hover {
+            color: #0046cc;
+        }
+
+        
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    <header>
+        <h1>Seneweb Actualités</h1>
+        <p>Votre source d'informations fiable et rapide</p>
+    </header>
+
+    <div class="container">
+        {% for article in articles %}
+            <div class="article">
+                <div class="content">
+                    <div class="title">
+                        <a href="{{ article.link }}" target="_blank">{{ article.title }}</a>
+                    </div>
+                    <div class="category">Catégorie : {{ article.category }}</div>
+                    <div class="meta">{{ article.meta }}</div>
+                    <div class="verdict {{ 'success' if article.prediction == 'Vrai' else '' }}">
+                        Verdict : {% if article.prediction == "Faux" %} Information douteuse {% else %} Information fiable {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    
+    <footer>
+        <p>&copy; 2024 Seneweb Actualités. Tous droits réservés.</p>
+    </footer>
+</body>
+</html>
