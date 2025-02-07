@@ -3,198 +3,239 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Seneweb - Actualités</title>
+    <title>Detection Fake News</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        
+        /* Style global */
         body {
-            font-family: 'Roboto', Arial, sans-serif;
+            font-family: 'Roboto', sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f3f4f6;
-            color: #333;
-        }
-
-        a {
-            text-decoration: none;
-            color: #0066ff;
-            transition: color 0.3s ease;
-        }
-
-        a:hover {
-            color: #0046cc;
-        }
-
-        
-        header {
-            background: linear-gradient(45deg, #0066ff, #003d99);
-            color: #fff;
-            padding: 5px 5px;
-            text-align: center;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        header h1 {
-            font-size: 2.8rem;
-            margin: 0;
-            animation: fadeInDown 1s ease-in-out;
-        }
-
-        header p {
-            margin-top: 10px;
-            font-size: 1.2rem;
-            animation: fadeInUp 1s ease-in-out;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 30px auto;
-            padding: 0 15px;
-        }
-
-        
-        .article {
-            background: #fff;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px;
+            background: #ffffff;  /* Blanc comme fond principal */
+            color: #003366;  /* Bleu foncé pour le texte principal */
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
             overflow: hidden;
-            transform: translateY(30px);
-            animation: slideUp 0.5s ease-in-out forwards;
+            transition: background-color 0.5s ease; /* Transition du fond */
         }
 
-        .article:hover {
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-            transform: scale(1.02);
+        /* En-tête avec image à gauche */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 50vh;
+            background: #003366;  /* Bleu foncé pour l'en-tête */
+            color: white;
+            padding: 40px 20px;
+            border-bottom: 6px solid #0099FF; /* Bleu clair sous l'en-tête */
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
             transition: all 0.3s ease;
         }
 
-        .article .content {
-            padding: 20px;
+        .header img {
+            width: 45%;
+            object-fit: cover;
+            height: auto;
+            margin-right: 20px;
+            border-radius: 15px;
+            transition: transform 0.3s ease-in-out;
         }
 
-        .article .title {
-            font-size: 1.6rem;
-            font-weight: bold;
+        .header img:hover {
+            transform: scale(1.05); /* Zoom sur l'image au survol */
+        }
+
+        .header .text-container {
+            padding: 15px;
+            text-align: left;
+            flex: 1;
+            transition: opacity 0.5s ease;
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 700;
             margin-bottom: 10px;
+            color: #ffffff;  /* Blanc pour le titre */
+            opacity: 0;
+            animation: fadeIn 1s forwards;
         }
 
-        .article .title a {
-            color: #333;
-            transition: color 0.3s ease;
+        p {
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: #e5e5e5; /* Texte en gris clair pour une bonne lisibilité */
         }
 
-        .article .title a:hover {
-            color: #0066ff;
+        /* Animation d'apparition */
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
-        .article .category {
-            font-size: 0.9rem;
-            color: #555;
-            font-style: italic;
-            margin-bottom: 10px;
+        /* Container principal */
+        .container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+            flex-grow: 1;
         }
 
-        .article .meta {
-            font-size: 0.8rem;
-            color: #888;
-            margin-bottom: 15px;
+        .btn-container {
+            display: flex;
+            gap: 30px;
+            margin-top: 20px;
+            justify-content: center;
+            animation: fadeIn 1s 0.5s forwards;
         }
 
-        .article .verdict {
-            font-size: 1rem;
+        .btn {
+            background: linear-gradient(135deg, #003366, #0099FF);  /* Dégradé bleu foncé et bleu clair */
+            color: white;
+            padding: 15px 35px;
+            font-size: 1.2rem;
             font-weight: bold;
-            color: #dc3545;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            position: relative;
         }
 
-        .article .verdict.success {
-            color: #28a745;
+        .btn:hover {
+            background: linear-gradient(135deg, #0099FF, #003366);  /* Inverser les couleurs au survol */
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
         }
 
-        
+        .btn:before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .btn:hover:before {
+            opacity: 1; /* Effet de lumière au survol */
+        }
+
+        /* Pied de page */
         footer {
-            background: #333;
-            color: #fff;
+            background-color: #003366;  /* Bleu foncé pour le pied de page */
+            color: white;
+            padding: 20px 10px;
+            margin-top: auto;
             text-align: center;
-            padding: 20px;
-            margin-top: 50px;
-        }
-
-        footer p {
-            margin: 0;
-            font-size: 1.3rem;
+            box-shadow: 0 -8px 16px rgba(0, 0, 0, 0.1);
         }
 
         footer a {
-            color: #0066ff;
+            color: #0099FF;  /* Bleu clair pour les liens */
+            text-decoration: none;
+            font-weight: 600;
         }
 
         footer a:hover {
-            color: #0046cc;
+            text-decoration: underline;
+            color: #003366; /* Bleu foncé pour les liens au survol */
         }
 
-        
-        @keyframes fadeInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                height: auto;
+                padding: 30px 20px;
             }
-            to {
-                opacity: 1;
-                transform: translateY(0);
+
+            .header img {
+                width: 100%;
+                height: auto;
+                margin-bottom: 20px;
+            }
+
+            .header .text-container {
+                text-align: center;
+            }
+
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            p {
+                font-size: 1rem;
+            }
+
+            .btn-container {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .btn {
+                width: 80%;
+                font-size: 1.1rem;
+                padding: 12px 0;
             }
         }
 
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
     </style>
 </head>
 <body>
-    
-    <header>
-        <h1>Seneweb Actualités</h1>
-        <p>Votre source d'informations fiable et rapide</p>
-    </header>
 
-    <div class="container">
-        {% for article in articles %}
-            <div class="article">
-                <div class="content">
-                    <div class="title">
-                        <a href="{{ article.link }}" target="_blank">{{ article.title }}</a>
-                    </div>
-                    <div class="category">Catégorie : {{ article.category }}</div>
-                    <div class="meta">{{ article.meta }}</div>
-                    <div class="verdict {{ 'success' if article.prediction == 'Vrai' else '' }}">
-                        Verdict : {% if article.prediction == "Faux" %} Information douteuse {% else %} Information fiable {% endif %}
-                    </div>
-                </div>
-            </div>
-        {% endfor %}
+    <!-- En-tête avec image à gauche -->
+    <div class="header">
+        <img src="{{ url_for('static', filename='fond.jpg') }}" alt="Image d'en-tête">
+
+        <div class="text-container">
+            <h1>Sénégal sous tous ses angles :</h1>
+            <p>Explorez les articles et découvrez leur véracité en un clic.</p>
+        </div>
     </div>
 
-    
+    <!-- Contenu principal -->
+    <div class="container">
+        <div class="btn-container">
+            <a href="/seneweb">
+                <button class="btn">Articles Seneweb</button>
+            </a>
+            <a href="/senplus">
+                <button class="btn">Articles Senplus</button>
+            </a>
+            <a href="/seneco">
+                <button class="btn">Articles Seneco</button>
+            </a>
+
+            <a href="/walfadjri">
+                <button class="btn">Articles Walfadjri</button>
+            </a>
+
+            <a href="/autres-sources">
+                <button class="btn">Autres sources</button>
+            </a>
+        </div>
+    </div>
+
+    <!-- Pied de page -->
     <footer>
-        <p>&copy; 2024 Seneweb Actualités. Tous droits réservés.</p>
+        <p>&copy; 2025 Sénégal Info. Tous droits réservés. | Politique de confidentialité | Conditions d'utilisation <a href="https://sambasy.netlify.app/">Contactez-nous</a></p>
     </footer>
+
 </body>
 </html>

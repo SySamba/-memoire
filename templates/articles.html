@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Articles - {{ source }}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* Global Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', Arial, sans-serif;
+            background-color: #F4F6F9;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Header */
+        header {
+            background-color: #392E2C; /* Dark brown */
+            color: white;
+            padding: 50px 20px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        header h1 {
+            font-size: 3rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 0;
+        }
+
+        /* Container */
+        .container {
+            padding: 40px 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Card */
+        .article {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            padding: 25px;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .article:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Title */
+        .title {
+            font-size: 1.9rem;
+            font-weight: 600;
+            color: #392E2C;
+            margin-bottom: 15px;
+            text-transform: capitalize;
+            transition: color 0.3s ease;
+        }
+
+        .title a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .title a:hover {
+            color: #B39188; /* Light beige */
+        }
+
+        /* Category */
+        .category {
+            font-size: 1.1rem;
+            color: #777;
+            margin-bottom: 20px;
+        }
+
+        /* Verdict */
+        .verdict {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-top: 15px;
+            padding: 8px;
+            border-radius: 10px;
+            text-align: center;
+            transition: background-color 0.3s ease;
+        }
+
+        .verdict.success {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .verdict.fail {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .verdict.info {
+            background-color: #17a2b8;
+            color: white;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #392E2C;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            font-size: 1rem;
+            margin-top: 40px;
+            box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        footer a {
+            color: #B39188;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        footer a:hover {
+            color: #e5e5e5;
+            text-decoration: underline;
+        }
+
+        /* Animations */
+        .fadeIn {
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1 class="fadeIn">Articles de {{ source }}</h1>
+    </header>
+
+    <div class="container">
+        {% for article in articles %}
+            <div class="article fadeIn">
+                <div class="title">
+                    <a href="{{ article.link }}" target="_blank">{{ article.title }}</a>
+                </div>
+                <div class="category">Catégorie : {{ article.category }}</div>
+                <div class="verdict {% if article.prediction == 'Vrai' %}success{% elif article.prediction == 'Faux' %}fail{% else %}info{% endif %}">
+                    Verdict : {% if article.prediction == "Faux" %} Information douteuse {% else %} Information fiable {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <footer>
+        <p style="text-align: center;">&copy; 2025 Seneweb & Senplus. Tous droits réservés. | <a href="https://sambasy.netlify.app/">Contactez-nous</a></p>
+    </footer>
+
+</body>
+</html>

@@ -1,0 +1,34 @@
+2025-01-10 09:34:13,336 - INFO - Lancement du scraping...
+2025-01-10 09:39:14,848 - ERROR - Erreur principale : Message: timeout: Timed out receiving message from renderer: 299.535
+  (Session info: MicrosoftEdge=131.0.2903.112)
+Stacktrace:
+	(No symbol) [0x00007FF70CCB6B05]
+	Microsoft::Applications::Events::EventProperty::empty [0x00007FF70CFDF474+1437348]
+	sqlite3_dbdata_init [0x00007FF70D082DA6+643174]
+	(No symbol) [0x00007FF70CB87528]
+	(No symbol) [0x00007FF70CB87278]
+	(No symbol) [0x00007FF70CB854BC]
+	(No symbol) [0x00007FF70CB85AFF]
+	(No symbol) [0x00007FF70CB90FF1]
+	(No symbol) [0x00007FF70CBA1B07]
+	(No symbol) [0x00007FF70CBA744A]
+	(No symbol) [0x00007FF70CB8645E]
+	(No symbol) [0x00007FF70CB861A0]
+	(No symbol) [0x00007FF70CBA1895]
+	(No symbol) [0x00007FF70CC16DFC]
+	(No symbol) [0x00007FF70CBFBE03]
+	(No symbol) [0x00007FF70CBD2984]
+	(No symbol) [0x00007FF70CBD1E30]
+	(No symbol) [0x00007FF70CBD2571]
+	Microsoft::Applications::Events::EventProperty::empty [0x00007FF70CF8BB04+1094964]
+	(No symbol) [0x00007FF70CCF32B8]
+	Microsoft::Applications::Events::EventProperty::empty [0x00007FF70CF8AF43+1091955]
+	Microsoft::Applications::Events::EventProperty::empty [0x00007FF70CF8AAA9+1090777]
+	Microsoft::Applications::Events::ILogConfiguration::operator* [0x00007FF70CD90CB1+461569]
+	Microsoft::Applications::Events::ILogConfiguration::operator* [0x00007FF70CD8C9D4+444452]
+	Microsoft::Applications::Events::ILogConfiguration::operator* [0x00007FF70CD8CB19+444777]
+	Microsoft::Applications::Events::ILogConfiguration::operator* [0x00007FF70CD82196+401382]
+	BaseThreadInitThunk [0x00007FF9A4A7E8D7+23]
+	RtlUserThreadStart [0x00007FF9A629FBCC+44]
+
+2025-01-10 09:49:21,186 - INFO - Lancement du scraping...
