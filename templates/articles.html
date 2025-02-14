@@ -47,6 +47,47 @@
             max-width: 1200px;
             margin: 0 auto;
         }
+        
+
+        .container1 {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+            flex-grow: 1;
+        }
+
+        .btn1-container {
+            display: flex;
+            gap: 30px;
+            margin-top: 20px;
+            justify-content: center;
+            animation: fadeIn 1s 0.5s forwards;
+        }
+
+        .btn1 {
+            background: linear-gradient(135deg, #3498db, #2980b9);  /* Dégradé bleu vif */
+            color: white;
+            padding: 15px 35px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+        .btn1.active {
+    background: linear-gradient(135deg, #e67e22, #d35400); /* Dégradé orange vif */
+    color: white;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    transform: scale(1.05);
+    cursor: default;
+    pointer-events: none; /* Désactive le clic sur le bouton actif */
+}
+
 
         /* Card */
         .article {
@@ -162,6 +203,8 @@
                 font-size: 2.5rem;
             }
         }
+
+        
     </style>
 </head>
 <body>
@@ -177,12 +220,41 @@
                     <a href="{{ article.link }}" target="_blank">{{ article.title }}</a>
                 </div>
                 <div class="category">Catégorie : {{ article.category }}</div>
+<div class="publish-date">Publié il y'a  : 
+    {% if article.category == 'Walfadjri' %}
+        {{ article.jeg_meta_date }}
+    {% elif article.category == 'Seneweb' %}
+        {{ article.date }}
+    {% else %}
+        {{ article.postdate }}
+    {% endif %}
+</div>
+
                 <div class="verdict {% if article.prediction == 'Vrai' %}success{% elif article.prediction == 'Faux' %}fail{% else %}info{% endif %}">
                     Verdict : {% if article.prediction == "Faux" %} Information douteuse {% else %} Information fiable {% endif %}
                 </div>
             </div>
         {% endfor %}
     </div>
+
+    <div class="btn1-container">
+        <a href="/seneweb">
+            <button class="btn1 {% if source == 'Seneweb' %}active{% endif %}">Articles Seneweb</button>
+        </a>
+        <a href="/senplus">
+            <button class="btn1 {% if source == 'Senplus' %}active{% endif %}">Articles Senplus</button>
+        </a>
+        <a href="/seneco">
+            <button class="btn1 {% if source == 'Seneco' %}active{% endif %}">Articles Seneco</button>
+        </a>
+        <a href="/walfadjri">
+            <button class="btn1 {% if source == 'walfadjri' %}active{% endif %}">Articles Walfadjri</button>
+        </a>
+        <a href="/autres-sources">
+            <button class="btn1 {% if source == 'autres-sources' %}active{% endif %}">Autres sources</button>
+        </a>
+    </div>
+    
 
     <footer>
         <p style="text-align: center;">&copy; 2025 Seneweb & Senplus. Tous droits réservés. | <a href="https://sambasy.netlify.app/">Contactez-nous</a></p>

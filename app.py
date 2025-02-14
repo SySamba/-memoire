@@ -2,6 +2,8 @@ from flask import Flask, render_template,request
 import pyodbc
 import joblib
 import pandas as pd
+import dateparser
+
 
 app = Flask(__name__)
 
@@ -42,6 +44,10 @@ def fetch_articles_from_db():
         cursor.close()
         conn.close()
 
+def convert_relative_dates(date_string):
+    # Utiliser dateparser pour convertir la date relative en une date absolue
+    date = dateparser.parse(date_string)
+    return date if date else None  # Retourner None si la conversion échoue
 
 
 def fetch_articles_from_csv():
@@ -73,6 +79,7 @@ def fetch_articles_from_csv_seneco():
 
     for _, row in df.iterrows():
         title = row['Titre']
+        postdate = row['postdate']
         if title and title not in seen_titles:
             seen_titles.add(title)
             articles.append({
@@ -80,29 +87,42 @@ def fetch_articles_from_csv_seneco():
                 "category": "Seneco",
                 "title": title,
                 "link": row['Lien_du_titre'],
-                "meta": "Source: seneco"
+                "meta": f"Source: seneco | Publié le {postdate}",
+                "postdate": postdate
             })
 
     return articles
 
 
 def fetch_articles_from_csv_senewebs():
-    df = pd.read_csv('senewebs.csv')
+    df = pd.read_csv('seneweb.csv')
     df = df.fillna("")
     articles = []
     seen_titles = set()
 
     for _, row in df.iterrows():
         title = row['Titre']
+        date = row['date']  # Cette date peut être relative
+        converted_date = convert_relative_dates(date)  # Convertir la date pour le tri
+
         if title and title not in seen_titles:
             seen_titles.add(title)
             articles.append({
                 "id": None,
                 "category": "Seneweb",
                 "title": title,
-                "link": row['Lien_du_titre'],
-                "meta": "Source: seneweb"
+                "link": row['meta_item_lien'],
+                "meta": f"Source: Seneweb | Publié le {date}",
+                "date": date,  # Garder la date d'origine
+                "converted_date": converted_date  # Garder la date convertie pour le tri
             })
+
+    # Trier les articles par date convertie (du plus récent au plus ancien)
+    articles.sort(key=lambda x: x['converted_date'], reverse=True)
+    
+    # Retirer la clé 'converted_date' car elle n'est pas nécessaire pour l'affichage
+    for article in articles:
+        del article['converted_date']
 
     return articles
 
@@ -116,6 +136,7 @@ def fetch_articles_from_csv_walfadjri():
 
     for _, row in df.iterrows():
         title = row['Titre']
+        jeg_meta_date=row['jeg_meta_date']
         if title and title not in seen_titles:
             seen_titles.add(title)
             articles.append({
@@ -123,7 +144,8 @@ def fetch_articles_from_csv_walfadjri():
                 "category": "Walfadjri",
                 "title": title,
                 "link": row['Lien_du_titre'],
-                "meta": "Source: Walfadjri"
+                "meta": f"Source: Walfadjri | Publié le {jeg_meta_date}",
+                "jeg_meta_date" : jeg_meta_date
             })
 
     return articles
