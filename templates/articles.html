@@ -6,7 +6,7 @@
     <title>Articles - {{ source }}</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        /* Global Reset */
+        /* Styles existants */
         * {
             margin: 0;
             padding: 0;
@@ -17,28 +17,15 @@
             font-family: 'Poppins', Arial, sans-serif;
             background-color: #F4F6F9;
             color: #333;
-            margin: 0;
-            padding: 0;
         }
 
-        /* Header */
         header {
-            background-color: #392E2C; /* Dark brown */
+            background-color: #392E2C;
             color: white;
             padding: 50px 20px;
             text-align: center;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
         }
 
-        header h1 {
-            font-size: 3rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin: 0;
-        }
-
-        /* Container */
         .container {
             padding: 40px 20px;
             display: grid;
@@ -47,7 +34,98 @@
             max-width: 1200px;
             margin: 0 auto;
         }
-        
+
+        .article {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            padding: 25px;
+            cursor: pointer;
+        }
+
+        .title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #392E2C;
+        }
+
+        .date {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .category {
+            font-size: 1rem;
+            color: #777;
+            margin-bottom: 10px;
+        }
+
+        .verdict {
+            font-size: 1.2rem;
+            font-weight: bold;
+            padding: 8px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .verdict.success { background-color: #28a745; color: white; }
+        .verdict.fail { background-color: #dc3545; color: white; }
+        .verdict.info { background-color: #17a2b8; color: white; }
+
+        /* 🎯 Styles pour le popup modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 10% auto;
+            padding: 20px;
+            border-radius: 10px;
+            width: 50%;
+            text-align: center;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-close {
+            color: red;
+            font-size: 1.5rem;
+            font-weight: bold;
+            float: right;
+            cursor: pointer;
+        }
+
+        .modal-body {
+            padding: 15px;
+        }
+
+        footer {
+            background-color: #2c3e50;  
+            color: white;
+            padding: 20px 10px;
+            margin-top: auto;
+            text-align: center;
+            box-shadow: 0 -8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        footer a {
+            color: #3498db;  
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+            color: #2980b9; 
+        }
 
         .container1 {
             display: flex;
@@ -67,7 +145,7 @@
         }
 
         .btn1 {
-            background: linear-gradient(135deg, #3498db, #2980b9);  /* Dégradé bleu vif */
+            background: linear-gradient(135deg, #3498db, #2980b9);  
             color: white;
             padding: 15px 35px;
             font-size: 1.2rem;
@@ -79,157 +157,35 @@
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
             position: relative;
         }
+
         .btn1.active {
-    background: linear-gradient(135deg, #e67e22, #d35400); /* Dégradé orange vif */
-    color: white;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-    transform: scale(1.05);
-    cursor: default;
-    pointer-events: none; /* Désactive le clic sur le bouton actif */
-}
-
-
-        /* Card */
-        .article {
-            background-color: white;
-            border-radius: 15px;
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            padding: 25px;
-            cursor: pointer;
-            position: relative;
+            background: linear-gradient(135deg, #e67e22, #d35400); 
+            transform: translateY(0); 
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); 
         }
-
-        .article:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Title */
-        .title {
-            font-size: 1.9rem;
-            font-weight: 600;
-            color: #392E2C;
-            margin-bottom: 15px;
-            text-transform: capitalize;
-            transition: color 0.3s ease;
-        }
-
-        .title a {
-            text-decoration: none;
-            color: inherit;
-        }
-
-        .title a:hover {
-            color: #B39188; /* Light beige */
-        }
-
-        /* Category */
-        .category {
-            font-size: 1.1rem;
-            color: #777;
-            margin-bottom: 20px;
-        }
-
-        /* Verdict */
-        .verdict {
-            font-size: 1.3rem;
-            font-weight: 600;
-            margin-top: 15px;
-            padding: 8px;
-            border-radius: 10px;
-            text-align: center;
-            transition: background-color 0.3s ease;
-        }
-
-        .verdict.success {
-            background-color: #28a745;
-            color: white;
-        }
-
-        .verdict.fail {
-            background-color: #dc3545;
-            color: white;
-        }
-
-        .verdict.info {
-            background-color: #17a2b8;
-            color: white;
-        }
-
-        /* Footer */
-        footer {
-            background-color: #392E2C;
-            color: white;
-            text-align: center;
-            padding: 20px;
-            font-size: 1rem;
-            margin-top: 40px;
-            box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.1);
-        }
-
-        footer a {
-            color: #B39188;
-            text-decoration: none;
-            font-weight: bold;
-            transition: color 0.3s ease;
-        }
-
-        footer a:hover {
-            color: #e5e5e5;
-            text-decoration: underline;
-        }
-
-        /* Animations */
-        .fadeIn {
-            animation: fadeIn 1s ease-in-out;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            header h1 {
-                font-size: 2.5rem;
-            }
-        }
-
-        
     </style>
 </head>
 <body>
 
     <header>
-        <h1 class="fadeIn">Articles de {{ source }}</h1>
+        <h1>Articles de {{ source }}</h1>
     </header>
 
     <div class="container">
+        
         {% for article in articles %}
-            <div class="article fadeIn">
-                <div class="title">
-                    <a href="{{ article.link }}" target="_blank">{{ article.title }}</a>
+            <div class="article" onclick="openModal('{{ article.title }}', '{{ article.category }}', '{{ article.date }}', '{{ article.link }}', '{{ article.prediction }}', '{{ article.content }}')">
+                <div class="title">{{ article.title }}</div>
+                <div class="publish-date">Publié il y'a : 
+                    {% if article.category == 'Walfadjri' %}
+                        {{ article.jeg_meta_date }}
+                    {% elif article.category == 'Seneweb' %}
+                        {{ article.date }}
+                    {% else %}
+                        {{ article.postdate }}
+                    {% endif %}
                 </div>
                 <div class="category">Catégorie : {{ article.category }}</div>
-<div class="publish-date">Publié il y'a  : 
-    {% if article.category == 'Walfadjri' %}
-        {{ article.jeg_meta_date }}
-    {% elif article.category == 'Seneweb' %}
-        {{ article.date }}
-    {% else %}
-        {{ article.postdate }}
-    {% endif %}
-</div>
-
                 <div class="verdict {% if article.prediction == 'Vrai' %}success{% elif article.prediction == 'Faux' %}fail{% else %}info{% endif %}">
                     Verdict : {% if article.prediction == "Faux" %} Information douteuse {% else %} Information fiable {% endif %}
                 </div>
@@ -237,28 +193,111 @@
         {% endfor %}
     </div>
 
-    <div class="btn1-container">
-        <a href="/seneweb">
-            <button class="btn1 {% if source == 'Seneweb' %}active{% endif %}">Articles Seneweb</button>
-        </a>
-        <a href="/senplus">
-            <button class="btn1 {% if source == 'Senplus' %}active{% endif %}">Articles Senplus</button>
-        </a>
-        <a href="/seneco">
-            <button class="btn1 {% if source == 'Seneco' %}active{% endif %}">Articles Seneco</button>
-        </a>
-        <a href="/walfadjri">
-            <button class="btn1 {% if source == 'walfadjri' %}active{% endif %}">Articles Walfadjri</button>
-        </a>
-        <a href="/autres-sources">
-            <button class="btn1 {% if source == 'autres-sources' %}active{% endif %}">Autres sources</button>
-        </a>
+    <!-- 🎯 Popup Modal -->
+    <div id="articleModal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeModal()">&times;</span>
+            <h2 id="modalTitle"></h2>
+            <p id="modalDate"></p>
+            <p id="modalCategory"></p>
+            <div id="modalContent"></div>
+            <a id="modalLink" href="#" target="_blank">Lire l'article</a>
+            <p id="modalVerdict"></p>
+        </div>
     </div>
-    
+
+    <script>
+        // 🎯 Ouvre le modal et insère les données
+        function openModal(title, category, date, link, prediction, content) {
+            document.getElementById("modalTitle").textContent = title;
+            document.getElementById("modalCategory").textContent = "Catégorie : " + category;
+            document.getElementById("modalContent").innerHTML = content;  // Utiliser innerHTML pour afficher tout le contenu HTML de l'article
+            document.getElementById("modalLink").href = link;
+            document.getElementById("modalLink").textContent = "Lire l'article complet";
+
+            let verdict = "Information fiable";
+            let colorClass = "success";
+            if (prediction === "Faux") {
+                verdict = "Information douteuse";
+                colorClass = "fail";
+            } else if (prediction !== "Vrai") {
+                verdict = "Information incertaine";
+                colorClass = "info";
+            }
+
+            document.getElementById("modalVerdict").textContent = "Verdict : " + verdict;
+            document.getElementById("modalVerdict").className = "verdict " + colorClass;
+
+            document.getElementById("articleModal").style.display = "block";
+        }
+
+        // 🎯 Ferme le modal
+        function closeModal() {
+            document.getElementById("articleModal").style.display = "none";
+        }
+
+        // Ferme le modal si l'utilisateur clique en dehors
+        window.onclick = function(event) {
+            let modal = document.getElementById("articleModal");
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+    // Récupérer l'URL actuelle
+    let currentUrl = window.location.pathname;
+
+    // Vérifier si on est sur la page /seneweb
+    if (currentUrl === "/seneweb") {
+        document.getElementById("seneweb-btn").classList.add("active");
+    }
+    // Vérifier si on est sur la page /senplus
+    else if (currentUrl === "/senplus") {
+        document.getElementById("senplus-btn").classList.add("active");
+    }
+    // Vérifier si on est sur la page /seneco
+    else if (currentUrl === "/seneco") {
+        document.getElementById("seneco-btn").classList.add("active");
+    }
+    // Vérifier si on est sur la page /walfadjri
+    else if (currentUrl === "/walfadjri") {
+        document.getElementById("walfadjri-btn").classList.add("active");
+    }
+    // Vérifier si on est sur la page /autres-sources
+    else if (currentUrl === "/autres-sources") {
+        document.getElementById("autres-sources-btn").classList.add("active");
+    }
+
+});
+
+    </script>
+
+    <div class="container1">
+        <div class="btn1-container">
+            <a href="/seneweb">
+                <button class="btn1" id="seneweb-btn">Articles Seneweb</button>
+            </a>
+            <a href="/senplus">
+                <button class="btn1" id="senplus-btn">Articles Senplus</button>
+            </a>
+            <a href="/seneco">
+                <button class="btn1" id="seneco-btn">Articles Seneco</button>
+            </a>
+            <a href="/walfadjri">
+                <button class="btn1" id="walfadjri-btn">Articles Walfadjri</button>
+            </a>
+            <a href="/autres-sources" id="autres-sources-btn">
+                <button class="btn1">Autres sources</button>
+            </a>
+            <a href="/" id="home-btn">
+                <button class="btn1">Retour Accueil</button>
+            </a>
+        </div>
+    </div>
 
     <footer>
-        <p style="text-align: center;">&copy; 2025 Seneweb & Senplus. Tous droits réservés. | <a href="https://sambasy.netlify.app/">Contactez-nous</a></p>
+        <p>&copy; 2025 Sénégal Info. Tous droits réservés. | Politique de confidentialité | Conditions d'utilisation <a href="https://sambasy.netlify.app/">Contactez-nous</a></p>
     </footer>
-
 </body>
 </html>

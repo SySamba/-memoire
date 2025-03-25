@@ -1,54 +1,61 @@
-from flask import Flask, render_template,request
+from flask import Flask, render_template, request, redirect, url_for
 import pyodbc
 import joblib
 import pandas as pd
 import dateparser
-
+from datetime import datetime
 
 app = Flask(__name__)
 
+# Chargement des modèles
 model_path = "fake_news.pkl"
 vectorizer_path = "vectorize.pkl"
 
 model = joblib.load(model_path)
 vectorizer = joblib.load(vectorizer_path)
 
+# Configuration de la connexion SQL Server
 def get_db_connection():
-    return pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};'
-                          'SERVER=DESKTOP-0RNC19U;'
-                          'DATABASE=seneweb;'
-                          'Trusted_Connection=yes;')
+    conn = pyodbc.connect(
+        'DRIVER={ODBC Driver 17 for SQL Server};'
+        'SERVER=DESKTOP-0RNC19U;'  # Remplacez par votre nom de serveur
+        'DATABASE=seneweb;'
+        'Trusted_Connection=yes;'
+    )
+    return conn
 
-def fetch_articles_from_db():
-    conn = get_db_connection()
-    cursor = conn.cursor()
+def get_latest_articles():
     try:
-        cursor.execute("""SELECT id, category, title, link, meta FROM Articles ORDER BY id DESC""")
-        rows = cursor.fetchall()
-        articles = []
-        seen_titles = set()
-
-        for row in rows:
-            title = row[2]
-            if title not in seen_titles:
-                seen_titles.add(title)
-                articles.append({
-                    "id": row[0],
-                    "category": row[1],
-                    "title": title,
-                    "link": row[3],
-                    "meta": row[4]
-                })
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        
+        query = """
+        SELECT TOP 9 
+            [id], [category], [title], [link], [meta], [date]
+        FROM [seneweb].[dbo].[Articles]
+        ORDER BY [date] DESC
+        """
+        
+        cursor.execute(query)
+        columns = [column[0] for column in cursor.description]
+        articles = [dict(zip(columns, row)) for row in cursor.fetchall()]
+        
+        # Ajouter la prédiction pour chaque article
+        for article in articles:
+            article['prediction'] = predict_truthfulness(article['title'])
+        
         return articles
+    except Exception as e:
+        print(f"Erreur lors de la récupération des articles: {e}")
+        return []
     finally:
-        cursor.close()
-        conn.close()
+        if 'conn' in locals():
+            conn.close()
 
 def convert_relative_dates(date_string):
     # Utiliser dateparser pour convertir la date relative en une date absolue
     date = dateparser.parse(date_string)
-    return date if date else None  # Retourner None si la conversion échoue
-
+    return date if date else None
 
 def fetch_articles_from_csv():
     df = pd.read_csv('SenePlus.csv')
@@ -58,6 +65,7 @@ def fetch_articles_from_csv():
 
     for _, row in df.iterrows():
         title = row['Titre']
+        content = row['rightstoryteaser_acontainsclass_blacklink']
         if title and title not in seen_titles:
             seen_titles.add(title)
             articles.append({
@@ -65,11 +73,11 @@ def fetch_articles_from_csv():
                 "category": "SenePlus",
                 "title": title,
                 "link": row['like_lien'],
-                "meta": "Source: SenePlus"
+                "meta": "Source: SenePlus",
+                "content": content if content else "Contenu non disponible"
             })
 
-    return articles
-
+    return articles 
 
 def fetch_articles_from_csv_seneco():
     df = pd.read_csv('seneco.csv')
@@ -92,7 +100,6 @@ def fetch_articles_from_csv_seneco():
             })
 
     return articles
-
 
 def fetch_articles_from_csv_senewebs():
     df = pd.read_csv('seneweb.csv')
@@ -126,8 +133,6 @@ def fetch_articles_from_csv_senewebs():
 
     return articles
 
-
-
 def fetch_articles_from_csv_walfadjri():
     df = pd.read_csv('walfadjri.csv')
     df = df.fillna("")
@@ -136,7 +141,8 @@ def fetch_articles_from_csv_walfadjri():
 
     for _, row in df.iterrows():
         title = row['Titre']
-        jeg_meta_date=row['jeg_meta_date']
+        jeg_meta_date = row['jeg_meta_date']
+        content = row['champ']
         if title and title not in seen_titles:
             seen_titles.add(title)
             articles.append({
@@ -145,12 +151,11 @@ def fetch_articles_from_csv_walfadjri():
                 "title": title,
                 "link": row['Lien_du_titre'],
                 "meta": f"Source: Walfadjri | Publié le {jeg_meta_date}",
-                "jeg_meta_date" : jeg_meta_date
+                "jeg_meta_date": jeg_meta_date,
+                "content": content if content else "Contenu non disponible"
             })
 
     return articles
-
-
 
 def predict_truthfulness(title):
     title_vectorized = vectorizer.transform([title])
@@ -159,7 +164,8 @@ def predict_truthfulness(title):
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+    latest_articles = get_latest_articles()
+    return render_template("index.html", latest_articles=latest_articles)
 
 @app.route("/seneweb")
 def seneweb_articles():
@@ -182,7 +188,6 @@ def seneco_articles():
         article["prediction"] = predict_truthfulness(article["title"])
     return render_template("articles.html", articles=csv_articles, source="Seneco")
 
-
 @app.route("/walfadjri")
 def walfadjri_articles():
     csv_articles = fetch_articles_from_csv_walfadjri()
@@ -190,14 +195,11 @@ def walfadjri_articles():
         article["prediction"] = predict_truthfulness(article["title"])
     return render_template("articles.html", articles=csv_articles, source="walfadjri")
 
-
 @app.route('/predict', methods=['POST'])
 def predict():
     title = request.form['title']
-    # Appeler le modèle de prédiction ici
     predicted_category = model.predict([title])[0]
     return f"La catégorie prédite est : {predicted_category}"
-
 
 @app.route("/autres-sources", methods=["GET", "POST"])
 def autres_sources():
@@ -221,6 +223,3 @@ def prediction():
 
 if __name__ == "__main__":
     app.run(debug=True)
-
-
-

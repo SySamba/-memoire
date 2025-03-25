@@ -4,237 +4,534 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Detection Fake News</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* Style global */
-        body {
-            font-family: 'Roboto', sans-serif;
+        :root {
+            --primary: #4361ee;
+            --primary-dark: #3a56d4;
+            --secondary: #3f37c9;
+            --success: #4cc9f0;
+            --danger: #f72585;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gray: #6c757d;
+            --light-gray: #e9ecef;
+        }
+
+        * {
             margin: 0;
             padding: 0;
-            background: #f4f7f6;  /* Fond léger et doux */
-            color: #2c3e50;  /* Bleu foncé pour le texte principal */
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
             display: flex;
             flex-direction: column;
             min-height: 100vh;
-            overflow: hidden;
-            transition: background-color 0.5s ease; /* Transition du fond */
         }
 
-        /* En-tête avec image à gauche */
-        .header {
+        /* Header */
+        .hero {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 4rem 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+            transform: rotate(30deg);
+        }
+
+        .hero-container {
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            height: 50vh;
-            background: #3498db;  /* Bleu vif pour l'en-tête */
-            color: white;
-            padding: 40px 20px;
-            border-bottom: 6px solid #2980b9; /* Bleu plus foncé sous l'en-tête */
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
         }
 
-        .header img {
+        .hero-image {
             width: 45%;
-            object-fit: cover;
-            height: auto;
-            margin-right: 20px;
-            border-radius: 15px;
-            transition: transform 0.3s ease-in-out;
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            transform: perspective(1000px) rotateY(-10deg);
+            transition: all 0.5s ease;
         }
 
-        .header img:hover {
-            transform: scale(1.05); /* Zoom sur l'image au survol */
+        .hero-image:hover {
+            transform: perspective(1000px) rotateY(0deg);
         }
 
-        .header .text-container {
-            padding: 15px;
-            text-align: left;
-            flex: 1;
-            transition: opacity 0.5s ease;
+        .hero-content {
+            width: 55%;
+            padding: 0 3rem;
         }
 
-        h1 {
-            font-size: 3rem;
+        .hero-title {
+            font-size: 2.8rem;
             font-weight: 700;
-            margin-bottom: 10px;
-            color: #ffffff;  /* Blanc pour le titre */
+            margin-bottom: 1rem;
+            line-height: 1.2;
             opacity: 0;
-            animation: fadeIn 1s forwards;
+            animation: fadeInUp 1s forwards;
         }
 
-        p {
+        .hero-subtitle {
             font-size: 1.2rem;
-            font-weight: 500;
-            color: #ecf0f1; /* Texte en gris clair pour une bonne lisibilité */
+            font-weight: 300;
+            margin-bottom: 2rem;
+            opacity: 0;
+            animation: fadeInUp 1s 0.3s forwards;
         }
 
-        /* Animation d'apparition */
-        @keyframes fadeIn {
-            0% {
+        /* Main Content */
+        .main {
+            flex: 1;
+            padding: 3rem 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .section-title h2 {
+            font-size: 2rem;
+            color: var(--primary);
+            display: inline-block;
+            padding-bottom: 0.5rem;
+        }
+
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: var(--primary);
+            border-radius: 3px;
+        }
+
+        /* Articles Section */
+        .articles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .article-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .article-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+        }
+
+        .article-image {
+            height: 180px;
+            background: var(--light-gray);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gray);
+        }
+
+        .article-image i {
+            font-size: 3rem;
+            opacity: 0.3;
+        }
+
+        .article-content {
+            padding: 1.5rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .article-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+
+        .article-title a {
+            color: inherit;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .article-title a:hover {
+            color: var(--primary);
+        }
+
+        .article-meta {
+            font-size: 0.85rem;
+            color: var(--gray);
+            margin-bottom: 1rem;
+        }
+
+        .article-prediction {
+            align-self: flex-start;
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-top: auto;
+        }
+
+        .prediction-true {
+            background-color: var(--success);
+            color: white;
+        }
+
+        .prediction-false {
+            background-color: var(--danger);
+            color: white;
+        }
+
+        /* Buttons Section */
+        .sources-section {
+            background: white;
+            padding: 3rem 0;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        .sources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .source-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            border: 2px solid var(--light-gray);
+            border-radius: 10px;
+            padding: 1.5rem 1rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--dark);
+        }
+
+        .source-btn:hover {
+            border-color: var(--primary);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(67, 97, 238, 0.1);
+        }
+
+        .source-icon {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .source-name {
+            font-weight: 600;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 3rem 0 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+        }
+
+        .footer-logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: white;
+        }
+
+        .footer-links h3 {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            color: var(--light);
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-links a {
+            color: var(--gray);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-links a {
+            color: white;
+            background: rgba(255,255,255,0.1);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .social-links a:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
                 opacity: 0;
-                transform: translateY(-30px);
+                transform: translateY(20px);
             }
-            100% {
+            to {
                 opacity: 1;
                 transform: translateY(0);
             }
         }
 
-        /* Container principal */
-        .container {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 30px;
-            flex-grow: 1;
-        }
-
-        .btn-container {
-            display: flex;
-            gap: 30px;
-            margin-top: 20px;
-            justify-content: center;
-            animation: fadeIn 1s 0.5s forwards;
-        }
-
-        .btn {
-            background: linear-gradient(135deg, #3498db, #2980b9);  /* Dégradé bleu vif */
-            color: white;
-            padding: 15px 35px;
-            font-size: 1.2rem;
-            font-weight: bold;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            position: relative;
-        }
-
-        .btn:hover {
-            background: linear-gradient(135deg, #2980b9, #3498db);  /* Inverser les couleurs au survol */
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-        }
-
-        .btn:before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 50px;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .btn:hover:before {
-            opacity: 1; /* Effet de lumière au survol */
-        }
-
-        /* Pied de page */
-        footer {
-            background-color: #2c3e50;  /* Bleu foncé pour le pied de page */
-            color: white;
-            padding: 20px 10px;
-            margin-top: auto;
-            text-align: center;
-            box-shadow: 0 -8px 16px rgba(0, 0, 0, 0.1);
-        }
-
-        footer a {
-            color: #3498db;  /* Bleu vif pour les liens */
-            text-decoration: none;
-            font-weight: 600;
-        }
-
-        footer a:hover {
-            text-decoration: underline;
-            color: #2980b9; /* Bleu plus foncé pour les liens au survol */
-        }
-
-        /* Responsive design */
-        @media (max-width: 768px) {
-            .header {
+        /* Responsive */
+        @media (max-width: 992px) {
+            .hero-container {
                 flex-direction: column;
-                height: auto;
-                padding: 30px 20px;
             }
-
-            .header img {
+            .hero-image, .hero-content {
                 width: 100%;
-                height: auto;
-                margin-bottom: 20px;
             }
-
-            .header .text-container {
+            .hero-image {
+                margin-bottom: 2rem;
+                transform: none;
+            }
+            .hero-content {
+                padding: 0;
                 text-align: center;
             }
+        }
 
-            h1 {
-                font-size: 2.5rem;
+        @media (max-width: 768px) {
+            .hero {
+                padding: 3rem 1.5rem;
             }
-
-            p {
-                font-size: 1rem;
+            .hero-title {
+                font-size: 2.2rem;
             }
-
-            .btn-container {
-                flex-direction: column;
-                gap: 20px;
-            }
-
-            .btn {
-                width: 80%;
-                font-size: 1.1rem;
-                padding: 12px 0;
+            .section-title h2 {
+                font-size: 1.8rem;
             }
         }
 
+        @media (max-width: 576px) {
+            .articles-grid {
+                grid-template-columns: 1fr;
+            }
+            .sources-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
     </style>
 </head>
 <body>
 
-    <!-- En-tête avec image à gauche -->
-    <div class="header">
-        <img src="{{ url_for('static', filename='fond.jpg') }}" alt="Image d'en-tête">
-
-        <div class="text-container">
-            <h1>Sénégal sous tous ses angles :</h1>
-            <p>Explorez les articles et découvrez leur véracité en un clic.</p>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-container">
+            <img src="{{ url_for('static', filename='fond.jpg') }}" alt="Détection de Fake News" class="hero-image">
+            <div class="hero-content">
+                <h1 class="hero-title">Sénégal sous tous ses angles</h1>
+                <p class="hero-subtitle">Explorez les articles et découvrez leur véracité en un clic.</p>
+            </div>
         </div>
-    </div>
+    </section>
 
-    <!-- Contenu principal -->
-    <div class="container">
-        <div class="btn-container">
-            <a href="/seneweb">
-                <button class="btn">Articles Seneweb</button>
-            </a>
-            <a href="/senplus">
-                <button class="btn">Articles Senplus</button>
-            </a>
-            <a href="/seneco">
-                <button class="btn">Articles Seneco</button>
-            </a>
+    <!-- Main Content -->
+    <main class="main">
+        <div class="container">
+            <!-- Latest Articles Section -->
+            <section class="articles-section">
+                <div class="section-title">
+                    <h2>Derniers articles analysés</h2>
+                </div>
+                
+                {% if latest_articles %}
+                <div class="articles-grid">
+                    {% for article in latest_articles %}
+                    <div class="article-card">
+                        <div class="article-image">
+                            <i class="fas fa-newspaper"></i>
+                        </div>
+                        <div class="article-content">
+                            <h3 class="article-title">
+                                <a href="{{ article.link }}" target="_blank">{{ article.title }}</a>
+                            </h3>
+                            <div class="article-meta">{{ article.meta }}</div>
+                            <span class="article-prediction {% if article.prediction == 'Vrai' %}prediction-true{% else %}prediction-false{% endif %}">
+                                {{ article.prediction }}
+                            </span>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div style="text-align: center; padding: 2rem; background: white; border-radius: 10px;">
+                    <p>Aucun article récent à afficher</p>
+                </div>
+                {% endif %}
+            </section>
 
-            <a href="/walfadjri">
-                <button class="btn">Articles Walfadjri</button>
-            </a>
-
-            <a href="/autres-sources">
-                <button class="btn">Autres sources</button>
-            </a>
+            <!-- Sources Section -->
+            <section class="sources-section">
+                <div class="section-title">
+                    <h2>Explorez par source</h2>
+                </div>
+                <div class="sources-grid">
+                    <a href="/seneweb" class="source-btn">
+                        <div class="source-icon">
+                            <i class="fas fa-globe"></i>
+                        </div>
+                        <div class="source-name">Seneweb</div>
+                    </a>
+                    <a href="/senplus" class="source-btn">
+                        <div class="source-icon">
+                            <i class="fas fa-newspaper"></i>
+                        </div>
+                        <div class="source-name">Senplus</div>
+                    </a>
+                    <a href="/seneco" class="source-btn">
+                        <div class="source-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div class="source-name">Seneco</div>
+                    </a>
+                    <a href="/walfadjri" class="source-btn">
+                        <div class="source-icon">
+                            <i class="fas fa-book-open"></i>
+                        </div>
+                        <div class="source-name">Walfadjri</div>
+                    </a>
+                    <a href="/autres-sources" class="source-btn">
+                        <div class="source-icon">
+                            <i class="fas fa-search"></i>
+                        </div>
+                        <div class="source-name">Autres sources</div>
+                    </a>
+                </div>
+            </section>
         </div>
-    </div>
+    </main>
 
-    <!-- Pied de page -->
+    <!-- Footer -->
     <footer>
-        <p>&copy; 2025 Sénégal Info. Tous droits réservés. | Politique de confidentialité | Conditions d'utilisation <a href="https://sambasy.netlify.app/">Contactez-nous</a></p>
+        <div class="footer-container">
+            <div class="footer-about">
+                <div class="footer-logo">Sénégal Info</div>
+                <p>Plateforme de vérification des informations et détection de fake news au Sénégal.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+            <div class="footer-links">
+                <h3>Liens rapides</h3>
+                <ul>
+                    <li><a href="/">Accueil</a></li>
+                    <li><a href="/seneweb">Seneweb</a></li>
+                    <li><a href="/senplus">Senplus</a></li>
+                    <li><a href="/seneco">Seneco</a></li>
+                    <li><a href="/walfadjri">Walfadjri</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h3>Ressources</h3>
+                <ul>
+                    <li><a href="#">Comment ça marche</a></li>
+                    <li><a href="#">Méthodologie</a></li>
+                    <li><a href="#">Blog</a></li>
+                    <li><a href="#">FAQ</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h3>Légal</h3>
+                <ul>
+                    <li><a href="#">Politique de confidentialité</a></li>
+                    <li><a href="#">Conditions d'utilisation</a></li>
+                    <li><a href="#">Mentions légales</a></li>
+                    <li><a href="https://sambasy.netlify.app/">Contactez-nous</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            &copy; 2025 Sénégal Info. Tous droits réservés.
+        </div>
     </footer>
 
 </body>
