@@ -18,39 +18,35 @@ vectorizer = joblib.load(vectorizer_path)
 def get_db_connection():
     conn = pyodbc.connect(
         'DRIVER={ODBC Driver 17 for SQL Server};'
-        'SERVER=DESKTOP-0RNC19U;'  # Remplacez par votre nom de serveur
+        'SERVER=sqlserver;'  # Remplacez par votre nom de serveur
         'DATABASE=seneweb;'
-        'Trusted_Connection=yes;'
+        'UID=sa;'
+        'PWD=Touba2021!;'
+
     )
     return conn
 
 def get_latest_articles():
     try:
-        conn = get_db_connection()
-        cursor = conn.cursor()
-        
-        query = """
-        SELECT TOP 9 
-            [id], [category], [title], [link], [meta], [date]
-        FROM [seneweb].[dbo].[Articles]
-        ORDER BY [date] DESC
-        """
-        
-        cursor.execute(query)
-        columns = [column[0] for column in cursor.description]
-        articles = [dict(zip(columns, row)) for row in cursor.fetchall()]
-        
-        # Ajouter la prédiction pour chaque article
-        for article in articles:
-            article['prediction'] = predict_truthfulness(article['title'])
-        
-        return articles
+        with get_db_connection() as conn:
+            cursor = conn.cursor()
+            query = """
+            SELECT TOP 6 
+                [id], [category], [title], [link], [meta], [date]
+            FROM [seneweb].[dbo].[Articles]
+            ORDER BY [date] DESC
+            """
+            cursor.execute(query)
+            columns = [column[0] for column in cursor.description]
+            articles = [dict(zip(columns, row)) for row in cursor.fetchall()]
+            
+            for article in articles:
+                article['prediction'] = predict_truthfulness(article['title'])
+            
+            return articles
     except Exception as e:
         print(f"Erreur lors de la récupération des articles: {e}")
         return []
-    finally:
-        if 'conn' in locals():
-            conn.close()
 
 def convert_relative_dates(date_string):
     # Utiliser dateparser pour convertir la date relative en une date absolue
@@ -58,7 +54,7 @@ def convert_relative_dates(date_string):
     return date if date else None
 
 def fetch_articles_from_csv():
-    df = pd.read_csv('SenePlus.csv')
+    df = pd.read_csv('donnee/SenePlus.csv')
     df = df.fillna("")
     articles = []
     seen_titles = set()
@@ -80,7 +76,7 @@ def fetch_articles_from_csv():
     return articles 
 
 def fetch_articles_from_csv_seneco():
-    df = pd.read_csv('seneco.csv')
+    df = pd.read_csv('donnee/seneco.csv')
     df = df.fillna("")
     articles = []
     seen_titles = set()
@@ -102,7 +98,7 @@ def fetch_articles_from_csv_seneco():
     return articles
 
 def fetch_articles_from_csv_senewebs():
-    df = pd.read_csv('seneweb.csv')
+    df = pd.read_csv('donnee/seneweb.csv')
     df = df.fillna("")
     articles = []
     seen_titles = set()
@@ -134,7 +130,7 @@ def fetch_articles_from_csv_senewebs():
     return articles
 
 def fetch_articles_from_csv_walfadjri():
-    df = pd.read_csv('walfadjri.csv')
+    df = pd.read_csv('donnee/walfadjri.csv')
     df = df.fillna("")
     articles = []
     seen_titles = set()

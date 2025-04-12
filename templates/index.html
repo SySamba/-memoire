@@ -396,6 +396,12 @@
                 grid-template-columns: 1fr 1fr;
             }
         }
+
+        .im1{
+              width: 120px; /* Taille de l'image */
+              height: 120px;
+              object-fit: cover; /* Permet de maintenir le ratio de l'image */
+        }
     </style>
 </head>
 <body>
@@ -454,27 +460,29 @@
                 <div class="sources-grid">
                     <a href="/seneweb" class="source-btn">
                         <div class="source-icon">
-                            <i class="fas fa-globe"></i>
+                            <img src="{{ url_for('static', filename='seneweb.jpg') }}" alt="seneweb" class="im1">
+                            
                         </div>
                         <div class="source-name">Seneweb</div>
                     </a>
                     <a href="/senplus" class="source-btn">
                         <div class="source-icon">
-                            <i class="fas fa-newspaper"></i>
+                            <img src="{{ url_for('static', filename='seneplus.jpeg') }}" alt="seneweb" class="im1">
                         </div>
                         <div class="source-name">Senplus</div>
                     </a>
                     <a href="/seneco" class="source-btn">
                         <div class="source-icon">
-                            <i class="fas fa-chart-line"></i>
+                            <img src="{{ url_for('static', filename='seneco.jpeg') }}" alt="seneweb" class="im1">
                         </div>
                         <div class="source-name">Seneco</div>
                     </a>
                     <a href="/walfadjri" class="source-btn">
                         <div class="source-icon">
-                            <i class="fas fa-book-open"></i>
+                            <img src="{{ url_for('static', filename='walf.jpeg') }}" alt="seneweb" class="im1">
                         </div>
                         <div class="source-name">Walfadjri</div>
+                        
                     </a>
                     <a href="/autres-sources" class="source-btn">
                         <div class="source-icon">
@@ -494,10 +502,8 @@
                 <div class="footer-logo">Sénégal Info</div>
                 <p>Plateforme de vérification des informations et détection de fake news au Sénégal.</p>
                 <div class="social-links">
-                    <a href="#"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#"><i class="fab fa-twitter"></i></a>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="https://github.com/SySamba"><i class="fab fa-github"></i></a>
+                    <a href="https://www.linkedin.com/in/samba-sy/"><i class="fab fa-linkedin-in"></i></a>
                 </div>
             </div>
             <div class="footer-links">

@@ -3,178 +3,412 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Autres sources</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <title>Autres sources - Vérification d'information</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* Style global */
-        body {
-            font-family: 'Roboto', sans-serif;
+        :root {
+            --primary: #4361ee;
+            --primary-dark: #3a56d4;
+            --secondary: #3f37c9;
+            --success: #4cc9f0;
+            --danger: #f72585;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gray: #6c757d;
+            --light-gray: #e9ecef;
+        }
+
+        * {
             margin: 0;
             padding: 0;
-            background: #ffffff;
-            color: #003366;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
             display: flex;
             flex-direction: column;
             min-height: 100vh;
+        }
+
+        /* Header */
+        .hero {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 4rem 2rem;
+            position: relative;
             overflow: hidden;
-            transition: background-color 0.5s ease;
+            text-align: center;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+            transform: rotate(30deg);
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            font-weight: 300;
+            margin-bottom: 2rem;
+        }
+
+        /* Main Content */
+        .main {
+            flex: 1;
+            padding: 3rem 0;
         }
 
         .container {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 30px;
-            flex-grow: 1;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 2rem;
         }
 
-        .form-container {
+        /* Verification Form */
+        .verification-form {
             background: white;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
-            max-width: 600px;
-            width: 100%;
+            border-radius: 12px;
+            padding: 2.5rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin-bottom: 3rem;
         }
 
-        .form-container h1 {
-            font-size: 2rem;
-            margin-bottom: 20px;
-            color: #003366;
-        }
-
-        .form-container textarea {
-            width: 100%;
-            height: 150px;
-            padding: 10px;
-            font-size: 1rem;
-            border: 1px solid #ccc;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            resize: none;
-        }
-
-        .form-container button {
-            background: linear-gradient(135deg, #003366, #0099FF);
-            color: white;
-            padding: 15px 35px;
-            font-size: 1.2rem;
-            font-weight: bold;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .form-container button:hover {
-            background: linear-gradient(135deg, #0099FF, #003366);
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-        }
-
-        .error {
-            color: #dc3545;
-            margin-bottom: 20px;
-        }
-        .container1 {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 30px;
-            flex-grow: 1;
-        }
-
-        .btn1-container {
-            display: flex;
-            gap: 30px;
-            margin-top: 20px;
-            justify-content: center;
-            animation: fadeIn 1s 0.5s forwards;
-        }
-
-        .btn1 {
-            background: linear-gradient(135deg, #3498db, #2980b9);  /* Dégradé bleu vif */
-            color: white;
-            padding: 15px 35px;
-            font-size: 1.2rem;
-            font-weight: bold;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            position: relative;
-        }
-        .btn1.active 
-        {
-            background: linear-gradient(135deg, #e67e22, #d35400); /* Dégradé rouge vif */
-           transform: translateY(0); /* Supprime l'effet hover */
-          box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); /* Augmente l'effet d'ombre */
-        }
-
-        footer {
-            background-color: #2c3e50;  /* Bleu foncé pour le pied de page */
-            color: white;
-            padding: 20px 10px;
-            margin-top: auto;
+        .form-title {
+            font-size: 1.8rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
             text-align: center;
-            box-shadow: 0 -8px 16px rgba(0, 0, 0, 0.1);
         }
 
-        footer a {
-            color: #3498db;  /* Bleu vif pour les liens */
-            text-decoration: none;
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .form-textarea {
+            width: 100%;
+            height: 200px;
+            padding: 1rem;
+            border: 1px solid var(--light-gray);
+            border-radius: 8px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            resize: vertical;
+            transition: border-color 0.3s;
+        }
+
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .form-submit {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 0.8rem 2rem;
+            font-size: 1.1rem;
             font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: block;
+            margin: 0 auto;
+            box-shadow: 0 5px 15px rgba(67, 97, 238, 0.2);
         }
 
-        footer a:hover {
-            text-decoration: underline;
-            color: #2980b9; /* Bleu plus foncé pour les liens au survol */
+        .form-submit:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(67, 97, 238, 0.3);
         }
 
-        
+        .error-message {
+            color: var(--danger);
+            text-align: center;
+            margin-bottom: 1.5rem;
+            font-weight: 500;
+        }
+
+        /* Navigation Buttons - MODIFIÉ POUR ALIGNEMENT HORIZONTAL */
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: nowrap; /* Empêche le retour à la ligne */
+            gap: 0.5rem; /* Espacement réduit entre les boutons */
+            margin: 2rem 0;
+            overflow-x: auto; /* Permet le défilement horizontal si nécessaire */
+            padding-bottom: 10px; /* Espace pour le scroll */
+            -webkit-overflow-scrolling: touch; /* Smooth scrolling sur iOS */
+        }
+
+        .btn {
+            padding: 0.6rem 1.2rem; /* Taille réduite pour tenir sur une ligne */
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+            white-space: nowrap; /* Empêche le texte de passer à la ligne */
+            font-size: 0.9rem; /* Taille de police réduite */
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(67, 97, 238, 0.2);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .active {
+            background-color: var(--primary-dark);
+            color: white;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 3rem 0 1.5rem;
+            margin-top: auto;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+        }
+
+        .footer-logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: white;
+        }
+
+        .footer-links h3 {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            color: var(--light);
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-links a {
+            color: var(--gray);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-links a {
+            color: white;
+            background: rgba(255,255,255,0.1);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .social-links a:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero {
+                padding: 3rem 1.5rem;
+            }
+            .hero-title {
+                font-size: 2rem;
+            }
+            
+            /* Adaptation des boutons pour mobile */
+            .btn-container {
+                flex-wrap: nowrap;
+                justify-content: flex-start;
+                gap: 0.5rem;
+                padding-bottom: 15px;
+            }
+            
+            .btn {
+                padding: 0.5rem 1rem;
+                font-size: 0.8rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .btn-container {
+                gap: 0.3rem;
+            }
+            
+            .btn {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.7rem;
+            }
+        }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <div class="form-container">
-            <h1>Vérifiez la véracité d'une information</h1>
-            {% if error %}
-                <div class="error">{{ error }}</div>
-            {% endif %}
-            <form action="/prediction" method="POST">
-                <textarea name="user_text" placeholder="Saisissez le texte à vérifier..." required></textarea>
-                <button type="submit">Vérifier</button>
-            </form>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">Vérification d'information</h1>
+            <p class="hero-subtitle">Soumettez un texte pour en vérifier la véracité</p>
         </div>
-    </div>
-    <div class="container1">
-        <div class="btn1-container">
-            <a href="/seneweb">
-                <button class="btn1">Articles Seneweb</button>
-            </a>
-            <a href="/senplus">
-                <button class="btn1">Articles Senplus</button>
-            </a>
-            <a href="/seneco">
-                <button class="btn1">Articles Seneco</button>
-            </a>
+    </section>
 
-            <a href="/walfadjri">
-                <button class="btn1">Articles Walfadjri</button>
-            </a>
+    <!-- Main Content -->
+    <main class="main">
+        <div class="container">
+            <!-- Verification Form -->
+            <div class="verification-form">
+                <h2 class="form-title">Vérifiez une information</h2>
+                
+                {% if error %}
+                <div class="error-message">{{ error }}</div>
+                {% endif %}
+                
+                <form action="/prediction" method="POST">
+                    <div class="form-group">
+                        <label for="user_text" class="form-label">Collez le texte à vérifier :</label>
+                        <textarea id="user_text" name="user_text" class="form-textarea" placeholder="Saisissez ici le texte dont vous voulez vérifier la véracité..." required></textarea>
+                    </div>
+                    <button type="submit" class="form-submit">Analyser le texte</button>
+                </form>
+            </div>
 
-            <a href="/autres-sources">
-                <button class="btn1 active">Autres sources</button>
-            </a>
+            <!-- Navigation Buttons - TOUS SUR UNE SEULE LIGNE -->
+            <div class="btn-container">
+                <a href="/seneweb" class="btn btn-outline">Seneweb</a>
+                <a href="/senplus" class="btn btn-outline">Senplus</a>
+                <a href="/seneco" class="btn btn-outline">Seneco</a>
+                <a href="/walfadjri" class="btn btn-outline">Walfadjri</a>
+                <a href="/autres-sources" class="btn btn-primary active">Autres</a>
+                <a href="/" class="btn btn-outline">Accueil</a>
+            </div>
         </div>
-    </div>
+    </main>
+
+    <!-- Footer -->
     <footer>
-        <p>&copy; 2025 Sénégal Info. Tous droits réservés. | Politique de confidentialité | Conditions d'utilisation <a href="https://sambasy.netlify.app/">Contactez-nous</a></p>
+        <div class="footer-container">
+            <div class="footer-about">
+                <div class="footer-logo">Sénégal Info</div>
+                <p>Plateforme de vérification des informations et détection de fake news au Sénégal.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+            <div class="footer-links">
+                <h3>Liens rapides</h3>
+                <ul>
+                    <li><a href="/">Accueil</a></li>
+                    <li><a href="/seneweb">Seneweb</a></li>
+                    <li><a href="/senplus">Senplus</a></li>
+                    <li><a href="/seneco">Seneco</a></li>
+                    <li><a href="/walfadjri">Walfadjri</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h3>Ressources</h3>
+                <ul>
+                    <li><a href="#">Comment ça marche</a></li>
+                    <li><a href="#">Méthodologie</a></li>
+                    <li><a href="#">Blog</a></li>
+                    <li><a href="#">FAQ</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h3>Légal</h3>
+                <ul>
+                    <li><a href="#">Politique de confidentialité</a></li>
+                    <li><a href="#">Conditions d'utilisation</a></li>
+                    <li><a href="#">Mentions légales</a></li>
+                    <li><a href="https://sambasy.netlify.app/">Contactez-nous</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            &copy; 2025 Sénégal Info. Tous droits réservés.
+        </div>
     </footer>
 </body>
 </html>
